@@ -15,7 +15,19 @@ class ClientRepository implements ClientRepositoryInterface
      */
     public function getClientPaginate(int $perPage): Paginator
     {
-        return Client::query()->paginate($perPage);
+        $clients= Client::query();
+        if (isset($data["keyword"])) {
+            $clients->where(function ($q) use ($data) {
+                $q->where("id", $data['keyword'])
+                    ->orWhere("name", "like", "%" . $data['keyword'] . "%")
+                    ->orWhere("email", "like", "%" . $data['keyword'] . "%")
+                    ->orWhere("mobile", "like", "%" . $data['keyword'] . "%");
+            });
+        }
+        if (isset($data["orderBy"])) {
+            $clients = $clients->orderBy($data["orderByColumn"], $data["orderBy"]);
+        }
+        return $clients->paginate($perPage);
     }
 
     /**
