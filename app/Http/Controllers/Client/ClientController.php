@@ -37,6 +37,18 @@ class ClientController extends Controller
     }
 
     /**
+     * Get a client by their ID.
+     *
+     * @param int $clientId
+     * @return JsonResponse\|null
+     */
+    public function getClientById(int $clientId): ?JsonResponse
+    {
+        $clients=$this->clientService->findById($clientId);
+        return response()->json($clients);
+    }
+
+    /**
      * Find a client randomly based on the specified role.
      *
      * @param Request $request

@@ -44,7 +44,8 @@ class ClientService implements ClientServiceInterface
      */
     public function getClientById(int $clientId): ?Client
     {
-        return $this->clientRepository->findById($clientId);
+        $client= $this->clientRepository->findById($clientId);
+        return $client->generate_token();
     }
 
     /**

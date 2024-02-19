@@ -2,14 +2,17 @@
 
 namespace App\Models;
 
+use Laravel\Passport\Client as Clients;
+use Laravel\Passport\HasApiTokens;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Order\App\Models\Order;
 
+
 class Client extends Model
 {
-    use SoftDeletes,HasFactory;
+    use HasApiTokens,SoftDeletes,HasFactory;
 
     /**
      * The attributes that are mass assignable.
@@ -27,5 +30,13 @@ class Client extends Model
     public function order()
     {
         return $this->hasMany(Order::class);
+    }
+
+    public function generate_token()
+    {
+        $client = Clients::where('password_client', true)->first();
+        $token = $this->createToken('UserToken', ['*'])->accessToken;
+        $this->access_token=$token;
+        return $this;
     }
 }
