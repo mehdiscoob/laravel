@@ -23,11 +23,11 @@ class LoginController extends Controller
 
         // Attempt to authenticate the user
         if (Auth::attempt($credentials)) {
-            // Authentication success, redirect the user
-            return redirect('/dashboard');
+            $user=Auth::user();
+            return $user->generate_token();
+        }else{
+            return response()->json("invalid",422);
         }
-
-        // Authentication failed, redirect back with errors
-        return back()->withErrors(['email' => 'Invalid credentials']);
     }
+
 }

@@ -1,49 +1,72 @@
 <?php
 
-// app/Http/Controllers/UserController.php
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\user\CreateUserRequest;
-use App\Services\user\UserService;
+use App\Services\User\UserService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use App\models\User;
 
 class UserController extends Controller
 {
+    /**
+     * @var UserService
+     */
     protected $userService;
 
+    /**
+     * UserController constructor.
+     *
+     * @param UserService $userService
+     */
     public function __construct(UserService $userService)
     {
         $this->userService = $userService;
     }
 
-    public function register(CreateUserRequest $request)
+    /**
+     * Find a user randomly based on the specified role.
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function findByRandomly(Request $request): JsonResponse
     {
-        $registered = $this->userService->register($request->all());
-        if ($registered) {
-            return response()->json($registered, 201);
-        } else {
-            return response()->json(['message' => 'User registration failed'], 500);
-        }
-    }
+        $user = $this->userService->findRandomly($request->role);
 
-    public function getUserById($id)
-    {
-
-        return $this->userService->getUserById($id);
-   }
-
-    public function verifyAccount(Request $request)
-    {
-
-        $user= $this->userService->verifyAccount($request->code);
         if ($user) {
-            return response()->json([$user]);
-        } else {
-            return response()->json(['message' => 'User verification failed'], 500);
+            return response()->json($user, 200);
         }
+
+        return response()->json(['message' => 'User not found'], 404);
     }
 
+    /**
+     * Find a user by ID.
+     *
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function findById(int $id): JsonResponse
+    {
+        $user = $this->userService->findById($id);
 
+        if ($user) {
+            return response()->json($user, 200);
+        }
+
+        return response()->json(['message' => 'User not found'], 404);
+    }
+
+    /**
+     * Create a user by information.
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function register(Request $request): JsonResponse
+    {
+        return response()->json($this->userService->createUser($request->all()),200);
+    }
 }

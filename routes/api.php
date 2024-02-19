@@ -14,21 +14,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::post('/refresh-token', 'AuthController@refreshToken')->name('refresh.token');
+
+Route::middleware('auth:api')->prefix('user')->group(function () {
+    Route::get("{id}",[\App\Http\Controllers\UserController::class,"findById"]);
+});
+Route::get("user/randomly",[\App\Http\Controllers\UserController::class,"findByRandomly"]);
+
 Route::prefix('user')->group(function () {
 Route::post("/",[\App\Http\Controllers\UserController::class,"register"]);
-Route::get("/{id}",[\App\Http\Controllers\UserController::class,'getUserById'])->middleware('auth:api');
 Route::post("verify/{id}",[\App\Http\Controllers\UserController::class,'verifyAccount'])->middleware('auth:api');
 });
 
-Route::middleware('auth:api')->prefix('ticket')->group(function () {
-    Route::get("/",[\App\Http\Controllers\TicketController::class,"userTickets"]);
-    Route::post("/",[\App\Http\Controllers\TicketController::class,"create"]);
-    Route::post("/{id}",[\App\Http\Controllers\TicketController::class,"changeStatus"]);
+Route::post('/login', [\App\Http\Controllers\Auth\LoginController::class,"login"])->name('login');
 
-});
+Route::post('/register', \App\Http\Controllers\Auth\RegisterAction::class)->name('register');
 
-Route::middleware('auth:api')->prefix('service')->group(function () {
-    Route::post("/",[\App\Http\Controllers\ServiceController::class,"store"]);
-    Route::get("/",[\App\Http\Controllers\ServiceController::class,"index"]);
-
-});

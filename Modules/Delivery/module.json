@@ -1,0 +1,19 @@
+{
+    "name": "Delivery",
+    "alias": "delivery",
+    "migration": {
+        "seeds": [
+            "Modules\\Delivery\\Database\\Seeders\\DeliveryDatabaseSeeder"
+        ],
+        "factories": [
+            "Modules\\Delivery\\Database\\Factories\\TruckFactory"
+        ]
+    },
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Delivery\\App\\Providers\\DeliveryServiceProvider"
+    ],
+    "files": []
+}

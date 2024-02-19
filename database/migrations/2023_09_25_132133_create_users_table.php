@@ -16,17 +16,13 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamp('mobile_verified_at')->nullable();
             $table->string('password');
-            $table->string('api_token')->nullable();
+            $table->foreignId('tenant_id')->constrained();
             $table->boolean('verified')->default(false);
             $table->rememberToken();
             $table->index("email");
             $table->timestamps();
             $table->softDeletes();
         });
-        // Insert data for roles
-        DB::table('users')->insert([
-            ['name' => 'super_admin',"email"=>"admin@gmail.com","password"=>"1234","api_token"=>\Illuminate\Support\Str::random(60)],
-        ]);
     }
 
     public function down()
