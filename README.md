@@ -27,6 +27,10 @@ Access your Laravel app at http://localhost:9000. Code changes reflect in real-t
 
 ### Helpers
 
+- **Sapmle Data:**
+    - **User:** `{username:"admin@gmail.com",password:"123456789"}`
+    - **Client:** `{username:"client@gmail.com",password:"123456789"}`
+
 - **Refresh Database:**
     - **Command:** `docker exec -it laravel-app-1 php artisan refresh-db-command`
     - **Description:** You can refresh the database using this Artisan command. Execute this command in the Laravel project directory to reset and reseed the database, ensuring a clean and updated state for your application.

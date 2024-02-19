@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Tenant;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -23,6 +24,14 @@ class CreateUsersTable extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+
+        \Illuminate\Support\Facades\DB::table('users')->insert([
+            ['name' => 'admin',"email"=>"admin@gmail.com","password"=>bcrypt('123456789'),
+                'tenant_id' => Tenant::inRandomOrder()->first(),
+                'verification_code' => null,
+                'email_verified_at' => now(),
+                'mobile_verified_at' => now(),]
+        ]);
     }
 
     public function down()
