@@ -3,9 +3,34 @@
 namespace App\Repositories\User;
 
 use App\Models\User;
+use Illuminate\Contracts\Pagination\Paginator;
 
 class UserRepository implements UserRepositoryInterface
 {
+    /**
+     * Get users as pagination.
+     *
+     * @param array $data
+     * @return Paginator
+     */
+    public function getUserPaginate(?array $data): Paginator
+    {
+        $users = User::query();
+        if (isset($data["keyword"])) {
+            $users->where(function ($q) use ($data) {
+                $q->where("id", $data['keyword'])
+                    ->orWhere("name", "like", "%" . $data['keyword'] . "%")
+                    ->orWhere("email", "like", "%" . $data['keyword'] . "%")
+                    ->orWhere("mobile", "like", "%" . $data['keyword'] . "%");
+            });
+        }
+        if (isset($data["orderBy"])) {
+            $users = $users->orderBy($data["orderByColumn"], $data["orderBy"]);
+        }
+        return $users->paginate($data['perPage']);
+    }
+
+
     /**
      * Create a new user.
      *
@@ -18,17 +43,6 @@ class UserRepository implements UserRepositoryInterface
     }
 
     /**
-     * Find a user by their ID.
-     *
-     * @param int $userId
-     * @return User|null
-     */
-    public function findById(int $userId): ?User
-    {
-        return User::find($userId);
-    }
-
-    /**
      * Find a user randomly based on their role.
      *
      * @param string|null $role
@@ -36,7 +50,7 @@ class UserRepository implements UserRepositoryInterface
      */
     public function findRandomly(?string $role): ?User
     {
-        return User::where('role', $role??"customer")->inRandomOrder()->first();
+        return User::where('role', $role ?? "customer")->inRandomOrder()->first();
     }
 
     /**
@@ -78,6 +92,17 @@ class UserRepository implements UserRepositoryInterface
         }
 
         return null;
+    }
+
+    /**
+     * Find a user by their ID.
+     *
+     * @param int $userId
+     * @return User|null
+     */
+    public function findById(int $userId): ?User
+    {
+        return User::find($userId);
     }
 
     /**

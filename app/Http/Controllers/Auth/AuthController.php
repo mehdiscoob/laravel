@@ -34,6 +34,7 @@ class AuthController extends Controller
      */
     public function refreshToken(Request $request): JsonResponse
     {
+
         $refreshToken = $request->input('refresh_token');
 
         $accessToken = $this->authService->refreshToken($refreshToken);

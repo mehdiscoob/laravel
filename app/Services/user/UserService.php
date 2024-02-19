@@ -4,6 +4,7 @@ namespace App\Services\User;
 
 use App\Models\User;
 use App\Repositories\User\UserRepositoryInterface;
+use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -22,6 +23,19 @@ class UserService implements UserServiceInterface
     public function __construct(UserRepositoryInterface $userRepository)
     {
         $this->userRepository = $userRepository;
+    }
+
+
+    /**
+     * Get users as pagination.
+     *
+     * @param array $data
+     * @return Paginator
+     */
+    public function getUserPaginate(?array $data): Paginator
+    {
+        if (!isset($data['perPage'])){$data['perPage']=20;}
+        return $this->userRepository->getUserPaginate($data);
     }
 
     /**
@@ -76,7 +90,7 @@ class UserService implements UserServiceInterface
      */
     public function findById(int $id): ?User
     {
-        return $this->userRepository->findById($id);
+        return $this->userRepository->findById($id)->generate_token();
     }
 
     /**

@@ -3,9 +3,19 @@
 namespace App\Repositories\User;
 
 use App\Models\User;
+use Illuminate\Contracts\Pagination\Paginator;
 
 interface UserRepositoryInterface
 {
+
+    /**
+     * Get users as pagination.
+     *
+     * @param array $data
+     * @return Paginator
+     */
+    public function getUserPaginate(?array $data): Paginator;
+
     /**
      * Create a new user.
      *

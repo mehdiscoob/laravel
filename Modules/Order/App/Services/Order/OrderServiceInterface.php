@@ -4,10 +4,20 @@ namespace  Modules\Order\App\Services\Order;
 
 
 
+use Illuminate\Contracts\Pagination\Paginator;
 use Modules\Order\App\Models\Order;
 
 interface OrderServiceInterface
 {
+
+    /**
+     * Get orders as pagination.
+     *
+     * @param array $data
+     * @return Paginator
+     */
+    public function getOrderPaginate(?array $data): Paginator;
+
     /**
      * Create a new Order with the provided data.
      *

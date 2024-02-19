@@ -21,8 +21,8 @@ class DeliveryFactory extends Factory
 
         return [
             'tenant_id' => \App\Models\Tenant::factory(),
-            'order_id' => Order::find(rand(1,100)),
-            'truck_id' => Truck::find(rand(1,20)),
+            'order_id' => Order::inRandomOrder()->first(),
+            'truck_id' => Truck::inRandomOrder()->first(),
             'delivery_date' => $this->faker->dateTimeBetween('-1 month', '+1 month'),
         ];
     }

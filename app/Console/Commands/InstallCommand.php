@@ -27,6 +27,7 @@ class InstallCommand extends Command
     public function handle()
     {
         Artisan::call("migrate");
+        Artisan::call("passport:install");
         Artisan::call("db:seed");
         Artisan::call("module:seed Order");
         Artisan::call("module:seed Delivery");

@@ -25,6 +25,18 @@ class UserController extends Controller
     }
 
     /**
+     * Get users as pagination.
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getUserPaginate(Request $request): JsonResponse
+    {
+        $users=$this->userService->getUserPaginate($request->all());
+        return response()->json($users);
+    }
+
+    /**
      * Find a user randomly based on the specified role.
      *
      * @param Request $request

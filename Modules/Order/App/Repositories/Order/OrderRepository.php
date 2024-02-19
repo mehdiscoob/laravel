@@ -1,7 +1,8 @@
 <?php
 
-namespace  Modules\Order\App\Repositories\Order;
+namespace Modules\Order\App\Repositories\Order;
 
+use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Support\Facades\DB;
 use Modules\Order\App\Models\Order;
 
@@ -19,8 +20,37 @@ class OrderRepository implements OrderRepositoryInterface
      */
     public function all(int $per_page = 50)
     {
-        return Order::with(["client", "tenant"])->paginate($per_page);
+        return Order::with(["client", "user", "tenant"])->paginate($per_page);
     }
+
+
+    /**
+     * Get orders as pagination.
+     *
+     * @param array $data
+     * @return Paginator
+     */
+    public function getOrderPaginate(?array $data): Paginator
+    {
+        $orders = Order::query()
+            ->select(["amount", "users.name as userName", "tenants.name as tenantUser","clients.name as clientName", DB::raw("DATE_FORMAT(orders.created_at, '%Y-%m-%d') AS created")])
+            ->leftJoin('clients', 'orders.client_id', '=', 'clients.id')
+            ->leftJoin('users', 'orders.user_id', '=', 'users.id')
+            ->leftJoin('tenants', 'orders.tenant_id', '=', 'tenants.id');
+        if (isset($data["keyword"])) {
+            $orders->where(function ($q) use ($data) {
+                $q->where("id", $data['keyword'])
+                    ->orWhere("amount", "like", "%" . $data['keyword'] . "%")
+                    ->orWhere("users.name", "like", "%" . $data['keyword'] . "%")
+                    ->orWhere("tenants.name", "like", "%" . $data['keyword'] . "%");
+            });
+        }
+        if (isset($data["orderBy"])) {
+            $orders = $orders->orderBy($data["orderByColumn"], $data["orderBy"]);
+        }
+        return $orders->paginate($data['perPage']);
+    }
+
 
     /**
      * Find an Order by ID.

@@ -3,9 +3,21 @@
 namespace App\Repositories\Client;
 
 use App\Models\Client;
+use Illuminate\Contracts\Pagination\Paginator;
 
 class ClientRepository implements ClientRepositoryInterface
 {
+    /**
+     * Get clients as pagination.
+     *
+     * @param int $perPage
+     * @return Paginator
+     */
+    public function getClientPaginate(int $perPage): Paginator
+    {
+        return Client::query()->paginate($perPage);
+    }
+
     /**
      * Create a new client.
      *

@@ -11,9 +11,8 @@ interface DeliveryInsertStrategy
     /**
      * Deliver to a location.
      *
-     * @param int $locationId
      * @param int $orderId
      * @return array
      */
-    public function deliver(int $orderId,int $locationId): array;
+    public function deliver(int $orderId): array;
 }

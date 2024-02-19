@@ -4,6 +4,7 @@ namespace App\Services\Client;
 
 use App\Models\Client;
 use App\Repositories\Client\ClientRepositoryInterface;
+use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -22,6 +23,17 @@ class ClientService implements ClientServiceInterface
     public function __construct(ClientRepositoryInterface $clientRepository)
     {
         $this->clientRepository = $clientRepository;
+    }
+
+    /**
+     * Get clients as pagination.
+     *
+     * @param int $perPage
+     * @return Paginator
+     */
+    public function getClientPaginate(int $perPage=20): Paginator
+    {
+        return $this->clientRepository->getClientPaginate($perPage);
     }
 
     /**
@@ -50,11 +62,16 @@ class ClientService implements ClientServiceInterface
      * Get a client by their mobile number.
      *
      * @param string $mobile
-     * @return Client|null
+     * @return mixed
      */
-    public function getClientByMobile(string $mobile): ?Client
+    public function getClientByMobile(string $mobile): mixed
     {
-        return $this->clientRepository->findByMobile($mobile);
+        $client=$this->clientRepository->findByMobile($mobile);
+        if (!isset($client)){
+            return "false";
+        }else{
+            return $client;
+        }
     }
 
     /**
@@ -78,6 +95,7 @@ class ClientService implements ClientServiceInterface
     {
         return $this->clientRepository->findById($id);
     }
+
 
     /**
      * Update a client's information.

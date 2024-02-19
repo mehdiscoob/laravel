@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Client;
 
+use App\Http\Controllers\Controller;
 use App\Services\Client\ClientService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -24,6 +25,18 @@ class ClientController extends Controller
     }
 
     /**
+     * Get clients as pagination.
+     *
+     * @param int $perPage
+     * @return JsonResponse
+     */
+    public function getClientPaginate(Request $request): JsonResponse
+    {
+        $clients=$this->clientService->getClientPaginate();
+        return response()->json($clients);
+    }
+
+    /**
      * Find a client randomly based on the specified role.
      *
      * @param Request $request
@@ -41,20 +54,15 @@ class ClientController extends Controller
     }
 
     /**
-     * Find a client by ID.
+     * Find a client by Mobile.
      *
-     * @param int $id
-     * @return JsonResponse
+     * @param Request $request
+     * @return mixed
      */
-    public function findById(int $id): JsonResponse
+    public function findByMobile(Request $request): mixed
     {
-        $client = $this->clientService->findById($id);
-
-        if ($client) {
-            return response()->json($client, 200);
-        }
-
-        return response()->json(['message' => 'Client not found'], 404);
+        $client = $this->clientService->getClientByMobile($request->mobile);
+        return $client;
     }
 
     /**

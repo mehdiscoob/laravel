@@ -3,9 +3,18 @@
 namespace App\Repositories\Client;
 
 use App\Models\Client;
+use Illuminate\Contracts\Pagination\Paginator;
 
 interface ClientRepositoryInterface
 {
+    /**
+     * Get clients as pagination.
+     *
+     * @param int $perPage
+     * @return Paginator
+     */
+    public function getClientPaginate(int $perPage): Paginator;
+
     /**
      * Create a new client.
      *

@@ -3,9 +3,9 @@
 namespace Modules\Order\App\Http\Controllers\Order;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Modules\Order\App\Http\Requests\Order\CreateOrderRequest;
 use Modules\Order\App\Services\Order\OrderService;
 
 class OrderController extends Controller
@@ -20,6 +20,20 @@ class OrderController extends Controller
     public function __construct(OrderService $orderService)
     {
         $this->orderService = $orderService;
+    }
+
+    /**
+     * Get orders as pagination.
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getOrderPaginate(Request $request):JsonResponse
+    {
+        dd("hi");
+        $orders= $this->orderService->getOrderPaginate($request->all());
+
+        return response()->json($orders);
     }
 
     /**

@@ -14,8 +14,10 @@ use Illuminate\Support\Facades\Route;
     |
 */
 
-Route::middleware('auth:api')->prefix('order')->group(function () {
+//Route::middleware('auth:api')->prefix('order')->group(function () {
+Route::prefix('order')->group(function () {
     Route::post("/", [\Modules\Order\App\Http\Controllers\Order\OrderController::class, "createOrder"]);
+    Route::get("/", [\Modules\Order\App\Http\Controllers\Order\OrderController::class, "getOrderPaginate"]);
     Route::get("Order/{id}", [\Modules\Order\App\Http\Controllers\Order\OrderController::class, "finById"]);
 });
 

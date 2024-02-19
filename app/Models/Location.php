@@ -16,7 +16,7 @@ class Location extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['tenant_id', 'address'];
+    protected $fillable = ['tenant_id', 'address',"client_id"];
 
 
     /**

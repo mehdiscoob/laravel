@@ -19,7 +19,7 @@ class LocationFactory extends Factory
      */
     public function definition()
     {
-        $clients=Client::find(rand(1,100));
+        $clients=Client::inRandomOrder()->first();
         return [
             'client_id' =>$clients->id ,
             'tenant_id' => $clients->tenant_id,

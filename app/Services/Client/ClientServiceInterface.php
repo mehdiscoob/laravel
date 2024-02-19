@@ -26,9 +26,9 @@ interface ClientServiceInterface
      * Get a client by their mobile number.
      *
      * @param string $mobile
-     * @return Client|null
+     * @return mixed
      */
-    public function getClientByMobile(string $mobile): ?Client;
+    public function getClientByMobile(string $mobile): mixed;
 
     /**
      * Find a client randomly based on their role.

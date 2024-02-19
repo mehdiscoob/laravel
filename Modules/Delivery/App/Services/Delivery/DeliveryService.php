@@ -4,6 +4,7 @@ namespace Modules\Delivery\App\Services\Delivery;
 
 
 use App\Models\Location;
+use Modules\Delivery\App\Models\Delivery;
 use Modules\Order\App\Models\Order;
 
 class DeliveryService
@@ -28,12 +29,12 @@ class DeliveryService
     /**
      * Deliver to a location using the selected strategy.
      *
-     * @param int $locationId
-     * @param int $orderId
+     * @param array $data
      * @return array
      */
-    public function deliverToLocation(int $orderId,int $locationId): array
+    public function deliverToLocation(array $data): array
     {
-        return $this->deliveryStrategy->deliver($orderId,$locationId);
+        Delivery::create($data);
+        return $this->deliveryStrategy->deliver($data["order_id"]);
     }
 }

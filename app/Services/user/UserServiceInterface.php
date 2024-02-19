@@ -3,9 +3,19 @@
 namespace App\Services\User;
 
 use App\Models\User;
+use Illuminate\Contracts\Pagination\Paginator;
 
 interface UserServiceInterface
 {
+
+    /**
+     * Get users as pagination.
+     *
+     * @param array $data
+     * @return Paginator
+     */
+    public function getUserPaginate(?array $data): Paginator;
+
     /**
      * Get a user by their ID.
      *

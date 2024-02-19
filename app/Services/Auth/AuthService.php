@@ -4,6 +4,7 @@ namespace App\Services\Auth;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
+use Illuminate\Support\Facades\Http;
 
 class AuthService
 {
@@ -26,9 +27,8 @@ class AuthService
     public function refreshToken(string $refreshToken): ?string
     {
         $tokenEndpoint = url('/oauth/token');
-
         try {
-            $response = $this->client->post($tokenEndpoint, [
+            $response = Http::timeout(300)->asForm()->post($tokenEndpoint, [
                 'form_params' => [
                     'grant_type' => 'refresh_token',
                     'refresh_token' => $refreshToken,

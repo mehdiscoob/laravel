@@ -26,7 +26,7 @@ class UserFactory extends Factory
             'name' => $this->faker->name,
             'email' => $this->faker->unique()->safeEmail,
             'mobile' => $this->faker->unique()->phoneNumber,
-            'tenant_id' => Tenant::find(rand(1,10)),
+            'tenant_id' => Tenant::inRandomOrder()->first(),
             'verification_code' => null,
             'email_verified_at' => now(),
             'mobile_verified_at' => now(),

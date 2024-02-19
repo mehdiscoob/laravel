@@ -13,7 +13,7 @@ class ClientFactory extends Factory
     public function definition()
     {
         return [
-            'tenant_id' => Tenant::find(rand(1,10)),
+            'tenant_id' => Tenant::inRandomOrder()->first(),
             'name' => $this->faker->company,
             'email' => $this->faker->email,
             'mobile' => $this->faker->phoneNumber,

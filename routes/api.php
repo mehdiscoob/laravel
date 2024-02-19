@@ -14,19 +14,30 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/refresh-token', 'AuthController@refreshToken')->name('refresh.token');
+Route::post('/refresh-token', [\App\Http\Controllers\Auth\AuthController::class,"refreshToken"])->name('refresh.token');
 
 Route::middleware('auth:api')->prefix('user')->group(function () {
-    Route::get("{id}",[\App\Http\Controllers\UserController::class,"findById"]);
+    Route::get("profile/{id}",[\App\Http\Controllers\UserController::class,"findById"]);
 });
 Route::get("user/randomly",[\App\Http\Controllers\UserController::class,"findByRandomly"]);
 
 Route::prefix('user')->group(function () {
-Route::post("/",[\App\Http\Controllers\UserController::class,"register"]);
-Route::post("verify/{id}",[\App\Http\Controllers\UserController::class,'verifyAccount'])->middleware('auth:api');
+Route::get("{id}",[\App\Http\Controllers\UserController::class,"findById"]);
+Route::get("/",[\App\Http\Controllers\UserController::class,"getUserPaginate"])->middleware('auth:api');
 });
+
+Route::prefix('client')->group(function () {
+    Route::get("/checked/",[\App\Http\Controllers\Client\ClientController::class,"findByMobile"]);
+//    Route::get("/",[\App\Http\Controllers\Client\ClientController::class,"getClientPaginate"])->middleware('auth:api');
+    Route::get("/",[\App\Http\Controllers\Client\ClientController::class,"getClientPaginate"]);
+});
+
+Route::prefix('tenant')->group(function () {
+    Route::get("/client/{id}",[\App\Http\Controllers\Tenant\TenantController::class,"getTenantByClient"]);
+});
+
 
 Route::post('/login', [\App\Http\Controllers\Auth\LoginController::class,"login"])->name('login');
 
-Route::post('/register', \App\Http\Controllers\Auth\RegisterAction::class)->name('register');
+Route::post('/register', [\App\Http\Controllers\UserController::class,"register"])->name('register');
 
