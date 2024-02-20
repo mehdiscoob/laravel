@@ -13,10 +13,11 @@ class ClientFactory extends Factory
     public function definition()
     {
         return [
-            'tenant_id' => Tenant::inRandomOrder()->first(),
+            'tenant_id' => Tenant::inRandomOrder()->first()->id,
             'name' => $this->faker->company,
             'email' => $this->faker->email,
             'mobile' => $this->faker->phoneNumber,
+            'password' => bcrypt('password'),
         ];
     }
 }

@@ -19,7 +19,7 @@ class Client extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['tenant_id', 'name',"email","mobile"];
+    protected $fillable = ['tenant_id', 'name',"email","mobile","password"];
 
 
     /**

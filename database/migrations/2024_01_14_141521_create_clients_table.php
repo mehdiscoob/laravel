@@ -15,6 +15,7 @@ class CreateClientsTable extends Migration
             $table->string('email')->unique();
             $table->string('mobile')->nullable()->unique();
             $table->foreignId('tenant_id')->constrained();
+            $table->string('password');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -23,7 +24,7 @@ class CreateClientsTable extends Migration
                 'name' => 'client',
                 "email" => "client@gmail.com",
                 "password" => bcrypt('123456789'),
-                'tenant_id' => Tenant::inRandomOrder()->first(),
+                'tenant_id' => Tenant::inRandomOrder()->first()->id,
             ]
         ]);
 

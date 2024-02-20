@@ -27,7 +27,7 @@ class CreateUsersTable extends Migration
 
         \Illuminate\Support\Facades\DB::table('users')->insert([
             ['name' => 'admin',"email"=>"admin@gmail.com","password"=>bcrypt('123456789'),
-                'tenant_id' => Tenant::inRandomOrder()->first(),
+                'tenant_id' => Tenant::factory()->create()->id,
                 'verification_code' => null,
                 'email_verified_at' => now(),
                 'mobile_verified_at' => now(),]
