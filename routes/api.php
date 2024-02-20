@@ -26,7 +26,7 @@ Route::get("/",[\App\Http\Controllers\UserController::class,"getUserPaginate"])-
 });
 
 Route::prefix('client')->group(function () {
-    Route::get("/checked/",[\App\Http\Controllers\Client\ClientController::class,"findByMobile"]);
+    Route::get("/checked/",[\App\Http\Controllers\Client\ClientController::class,"findByMobile"])->middleware('auth:api');
     Route::get("/",[\App\Http\Controllers\Client\ClientController::class,"getClientPaginate"])->middleware('auth:api');
     Route::get("/{id}",[\App\Http\Controllers\Client\ClientController::class,"getClientById"])->middleware('auth:api');
 });
