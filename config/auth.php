@@ -44,6 +44,10 @@ return [
             'driver' => 'passport',
             'provider' => 'users',
         ],
+        'client-web' => [
+            'driver' => 'session',
+            'provider' => 'clients',
+        ],
         'client' => [
             'driver' => 'passport',
             'provider' => 'clients',

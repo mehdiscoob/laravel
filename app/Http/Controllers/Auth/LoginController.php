@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -20,14 +21,14 @@ class LoginController extends Controller
             'email' => 'required|email',
             'password' => 'required',
         ]);
-
-        // Attempt to authenticate the user
-        if (Auth::attempt($credentials)) {
-            $user=Auth::user();
-            return $user->generate_token();
-        }else{
-            return response()->json("invalid",422);
+        if (Auth::guard('web')->attempt($credentials)) {
+            $user = Auth::guard('web')->user();
+        } elseif (Auth::guard('client-web')->attempt($credentials)) {
+            $user = Auth::guard('client-web')->user();
+        } else {
+            return response()->json("Invalid credentials", 422);
         }
+        return $user->generate_token();
     }
 
 }

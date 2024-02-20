@@ -30,7 +30,6 @@ class OrderController extends Controller
      */
     public function getOrderPaginate(Request $request):JsonResponse
     {
-        dd("hi");
         $orders= $this->orderService->getOrderPaginate($request->all());
 
         return response()->json($orders);

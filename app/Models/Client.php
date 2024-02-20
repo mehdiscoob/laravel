@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\Client as Clients;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,7 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Order\App\Models\Order;
 
 
-class Client extends Model
+class Client extends Authenticatable
 {
     use HasApiTokens,SoftDeletes,HasFactory;
 
@@ -37,6 +38,7 @@ class Client extends Model
         $client = Clients::where('password_client', true)->first();
         $token = $this->createToken('UserToken', ['*'])->accessToken;
         $this->access_token=$token;
+        $this->type="client";
         return $this;
     }
 }

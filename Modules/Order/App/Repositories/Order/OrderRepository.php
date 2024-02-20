@@ -33,7 +33,7 @@ class OrderRepository implements OrderRepositoryInterface
     public function getOrderPaginate(?array $data): Paginator
     {
         $orders = Order::query()
-            ->select(["amount", "users.name as userName", "tenants.name as tenantUser","clients.name as clientName", DB::raw("DATE_FORMAT(orders.created_at, '%Y-%m-%d') AS created")])
+            ->select(["orders.id","amount", "users.name as userName", "tenants.name as tenantUser","clients.name as clientName", DB::raw("DATE_FORMAT(orders.created_at, '%Y-%m-%d') AS created")])
             ->leftJoin('clients', 'orders.client_id', '=', 'clients.id')
             ->leftJoin('users', 'orders.user_id', '=', 'users.id')
             ->leftJoin('tenants', 'orders.tenant_id', '=', 'tenants.id');

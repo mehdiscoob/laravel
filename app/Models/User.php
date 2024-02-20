@@ -72,6 +72,7 @@ class User extends Authenticatable
         $client = Client::where('password_client', true)->first();
         $token = $this->createToken('UserToken', ['*'])->accessToken;
         $this->access_token=$token;
+        $this->type="user";
         return $this;
     }
 
